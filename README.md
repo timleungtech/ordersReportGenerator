@@ -7,3 +7,5 @@ Gets data by looking for html classes and attributes. Consolidated the data to m
 ## Room for improvement
 * Display the output in a more user-friendly front end interface using iframe to reference a read-only source.
 * Make the report more print-friendly
+
+![preview](https://raw.githubusercontent.com/timleungtech/ordersReportGenerator/main/preview.jpg)
