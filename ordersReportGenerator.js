@@ -57,6 +57,11 @@ function makeObjArr(){
         }
         return objArr
     }
+// sort objects by propertyName and then customer
+function sortByProperty(){
+    let objArr = makeObjArr()
+    return objArr.sort((a, b) => (a.productName > b.productName) ? 1 : (a.productName === b.productName) ? ((a.customer > b.customer) ? 1 : -1) : -1 )
+}
 let array = makeRows()
-makeObjArr()
-console.table(makeObjArr())
+sortByProperty()
+console.table(sortByProperty())
