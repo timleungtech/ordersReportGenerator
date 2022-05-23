@@ -130,5 +130,38 @@ function createSubtotalsRow(){
     let lastSubtotal = new MakeRowObj(null, objArr[objArr.length - 1].productCode, `TOTAL: ${objArr[objArr.length - 1].productName}`, objArr[objArr.length - 1].unit, orderSum[j], fillSum[j], objArr[objArr.length - 1].storage)
     objArr.splice(objArr.length, 0, lastSubtotal)
     console.table(objArr)
+    // return objArr
 }
 createSubtotalsRow()
+// // inserts a div before the end of the DOM body tag
+// function insertContainerInDom(){
+//     document.querySelector('body').insertAdjacentHTML('beforeEnd', '<div id="ordersbyproduct-container"></div>')
+// }
+// // creates an HTML table in DOM
+// function createHTMLtable(){
+//     let rows = createSubtotalsRow()
+//     let html = '<table>'
+//     html += '<tr>'
+//     for(let j in rows[0]) {
+//         html += '<th>' + j + '</th>'
+//     }
+//     html += '</tr>'
+//     for(let i = 0; i < rows.length; i++) {
+//         html += '<tr>'
+//         for(let j in rows[i]) {
+//             if(rows[i].customer === null){
+//                 html += '<th>' + rows[i][j] + '</th>'
+//             } else {
+//                 html += '<td>' + rows[i][j] + '</td>'
+//             }        
+//         }
+//         html += '</tr>'
+//     }
+//     html += '</table>'
+//     document.getElementById('ordersbyproduct-container').innerHTML = html
+// }
+// function generateTableInDOM(){
+//     insertContainerInDom()
+//     createHTMLtable()
+// }
+// document.querySelector('#button-1227').addEventListener('click', generateTableInDOM())
