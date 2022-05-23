@@ -27,7 +27,11 @@ function makeRows(){
             currentCustomer = getCustomers()[j]
             i += 2
         } else {
-            row = currentCustomer.trim().slice(10).concat(delimiter, items[i], delimiter, items[i+1], delimiter, items[i+2], delimiter, items[i+3], delimiter, items[i+4], delimiter, items[i+5])
+            row = '00' + currentCustomer.trim().slice(10)
+            if (row.charAt(2) !== '3'){
+                row = '0' + row
+            }
+            row = row.concat(delimiter, items[i], delimiter, items[i+1], delimiter, items[i+2], delimiter, items[i+3], delimiter, items[i+4], delimiter, items[i+5])
             newArr.push(row)
             i += 5
         }
@@ -72,56 +76,59 @@ function getUniqueItemNames(){
     }
     let uniqueSubtotalNames = [...new Set(subtotal)];
     return uniqueSubtotalNames
-//     let orderSum = 0
-//     let fillSum = 0
-//     for(let i = 0; i < objArr.length - 1; i++){
-//         if (objArr[i].productName == objArr[i+1].productName){
-//             orderSum += objArr[i+1].orderQty
-//             fillSum += objArr[i+1].fillQty
-//     }
-//     return [orderSum, fillSum]
 }
+// sum subtotal of ordered items
 function getItemsOrderedTotal(){
     let objArr = sortByProperty()
-    let allItems = getUniqueSubtotalNames()
-    let sum = []
+    let allItems = getUniqueItemNames()
+    let sum = 0
     let arrayOfSums = []
-    for(let j = 0; j < allItems.length; j++){   //6
-        for(let i = 0; i < objArr.length; i++){     //12
-            if (objArr.productName == allItems[j]){
-                sum += objArr.orderQty
+    for(let j = 0; j < allItems.length; j++){
+        for(let i = 0; i < objArr.length; i++){
+            if (allItems[j] == objArr[i].productName){
+                sum += objArr[i].orderQty
             }
-            arrayOfSums.push(sum)
         }
+        arrayOfSums.push(sum)
+        sum = 0
     }
     return arrayOfSums
 }
-function getSubtotalFillSum(){
-
+// sum subtotal of filled items
+function getItemsFilledTotal(){
+    let objArr = sortByProperty()
+    let allItems = getUniqueItemNames()
+    let sum = 0
+    let arrayOfSums = []
+    for(let j = 0; j < allItems.length; j++){
+        for(let i = 0; i < objArr.length; i++){
+            if (allItems[j] == objArr[i].productName){
+                sum += objArr[i].fillQty
+            }
+        }
+        arrayOfSums.push(sum)
+        sum = 0
+    }
+    return arrayOfSums
 }
-
-
 // create subtotals rows
 function createSubtotalsRow(){
     let objArr = sortByProperty()
-    let orderSum = 0
-    let fillSum = 0
+    let orderSum = getItemsOrderedTotal()
+    let fillSum = getItemsFilledTotal()
+    let j = 0
     let subtotal = {}
     console.table(objArr)
     for(let i = 0; i < objArr.length - 1; i++){
         if (objArr[i].productName !== objArr[i+1].productName){
-            subtotal = new MakeRowObj(null, objArr[i].productCode, objArr[i].productName, objArr[i].unit, orderSum, fillSum, objArr[i].storage)
+            subtotal = new MakeRowObj(null, objArr[i].productCode, `TOTAL: ${objArr[i].productName}`, objArr[i].unit, orderSum[j], fillSum[j], objArr[i].storage)
             objArr.splice(i+1, 0, subtotal)
             i++
+            j++
         }
     }
-    // let lastSubtotal = new MakeRowObj(null, objArr[i].productCode, objArr[objArr.length - 1].productName, objArr[i].unit, orderSum, fillSum, objArr[i].storage)
-    // console.log(lastSubtotal)
+    let lastSubtotal = new MakeRowObj(null, objArr[objArr.length - 1].productCode, `TOTAL: ${objArr[objArr.length - 1].productName}`, objArr[objArr.length - 1].unit, orderSum[j], fillSum[j], objArr[objArr.length - 1].storage)
+    objArr.splice(objArr.length, 0, lastSubtotal)
     console.table(objArr)
 }
-
-// createSubtotalsRow()
-// sortByProperty()
-getItemsOrderedTotal()
-// getSubtotalNames()
-// console.table(sortByProperty()) // Array(481) Array(12) to 18
+createSubtotalsRow()
