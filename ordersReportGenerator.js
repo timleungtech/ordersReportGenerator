@@ -118,7 +118,7 @@ function createSubtotalsRow(){
     let fillSum = getItemsFilledTotal()
     let j = 0
     let subtotal = {}
-    console.table(objArr)
+    // console.table(objArr)
     for(let i = 0; i < objArr.length - 1; i++){
         if (objArr[i].productName !== objArr[i+1].productName){
             subtotal = new MakeRowObj(null, objArr[i].productCode, `TOTAL: ${objArr[i].productName}`, objArr[i].unit, orderSum[j], fillSum[j], objArr[i].storage)
