@@ -76,8 +76,8 @@ function getUniqueItemNames(){
     let uniqueSubtotalNames = [...new Set(subtotal)];
     return uniqueSubtotalNames
 }
-// sum subtotal of ordered items
-function getItemsOrderedTotal(){
+// sum items subtotal. params: orderQty, fillQty
+function getItemsTotal(qty){
     let objArr = sortByProperty()
     let allItems = getUniqueItemNames()
     let sum = 0
@@ -85,24 +85,7 @@ function getItemsOrderedTotal(){
     for(let j = 0; j < allItems.length; j++){
         for(let i = 0; i < objArr.length; i++){
             if (allItems[j] == objArr[i].productName){
-                sum += objArr[i].orderQty
-            }
-        }
-        arrayOfSums.push(sum)
-        sum = 0
-    }
-    return arrayOfSums
-}
-// sum subtotal of filled items
-function getItemsFilledTotal(){
-    let objArr = sortByProperty()
-    let allItems = getUniqueItemNames()
-    let sum = 0
-    let arrayOfSums = []
-    for(let j = 0; j < allItems.length; j++){
-        for(let i = 0; i < objArr.length; i++){
-            if (allItems[j] == objArr[i].productName){
-                sum += objArr[i].fillQty
+                sum += objArr[i][qty]
             }
         }
         arrayOfSums.push(sum)
@@ -134,15 +117,6 @@ let delimiter = '* '
 let data = createSubtotalsRow()
 console.table(data)
 
-//sum orderQty if customer === null
-const totalOrderQty = data
-    .filter(item => item.customer === null)
-    .reduce((sum, item) => sum + item.orderQty, 0);
-
-//sum fillQty if customer === null
-const totalFillQty = data
-    .filter(item => item.customer === null)
-    .reduce((sum, item) => sum + item.fillQty, 0);
-
-console.log(`Ordered: ${totalOrderQty}`);
-console.log(`Filled: ${totalFillQty}`);
+// sum all subtotals
+console.log(`Ordered: ${getItemsTotal('orderQty').reduce((a, c) => a + c)}`)
+console.log(`Filled: ${getItemsTotal('fillQty').reduce((a, c) => a + c)}`)
