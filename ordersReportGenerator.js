@@ -57,7 +57,7 @@ function makeObjArr(){
         let array = makeRows()
         for(let i = 0; i < array.length; i++){
             row = array[i].split(', ')
-            obj = new MakeRowObj(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+            let obj = new MakeRowObj(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
             objArr.push(obj)
         }
         return objArr
@@ -128,19 +128,20 @@ function createSubtotalsRow(){
         }
     }
     let lastSubtotal = new MakeRowObj(null, objArr[objArr.length - 1].productCode, `TOTAL: ${objArr[objArr.length - 1].productName}`, objArr[objArr.length - 1].unit, orderSum[j], fillSum[j], objArr[objArr.length - 1].storage)
-    objArr.splice(objArr.length, 0, lastSubtotal)
-    console.table(objArr)
-    // return objArr
-
-    const totalOrderQty = objArr
-        .filter(item => item.customer === null)
-        .reduce((sum, item) => sum + item.orderQty, 0);
-    
-    const totalFillQty = objArr
-        .filter(item => item.customer === null)
-        .reduce((sum, item) => sum + item.fillQty, 0);
-
-    console.log(`Ordered: ${totalOrderQty}`);
-    console.log(`Filled: ${totalFillQty}`);
+    objArr.splice(objArr.length, 0, lastSubtotal)    
+    return objArr
 }
-createSubtotalsRow()
+
+let data = createSubtotalsRow()
+console.table(data)
+
+const totalOrderQty = data
+    .filter(item => item.customer === null)
+    .reduce((sum, item) => sum + item.orderQty, 0);
+
+const totalFillQty = data
+    .filter(item => item.customer === null)
+    .reduce((sum, item) => sum + item.fillQty, 0);
+
+console.log(`Ordered: ${totalOrderQty}`);
+console.log(`Filled: ${totalFillQty}`);
