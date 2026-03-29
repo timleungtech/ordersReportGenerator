@@ -131,6 +131,17 @@ function createSubtotalsRow(){
     objArr.splice(objArr.length, 0, lastSubtotal)
     console.table(objArr)
     // return objArr
+
+    const totalOrderQty = objArr
+        .filter(item => item.customer === null)
+        .reduce((sum, item) => sum + item.orderQty, 0);
+    
+    const totalFillQty = objArr
+        .filter(item => item.customer === null)
+        .reduce((sum, item) => sum + item.fillQty, 0);
+
+    console.log(`Ordered: ${totalOrderQty}`);
+    console.log(`Filled: ${totalFillQty}`);
 }
 createSubtotalsRow()
 // // inserts a div before the end of the DOM body tag
