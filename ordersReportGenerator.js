@@ -55,7 +55,7 @@ function makeObjArr(){
         let objArr = []
         let array = makeRows()
         for(let i = 0; i < array.length; i++){
-            row = array[i].split(`${delimiter}`)
+            row = array[i].split(delimiter)
             let obj = new MakeRowObj(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
             objArr.push(obj)
         }
@@ -76,8 +76,8 @@ function getUniqueItemNames(){
     let uniqueSubtotalNames = [...new Set(subtotal)];
     return uniqueSubtotalNames
 }
-// sum items subtotal. params: orderQty, fillQty
-function getItemsTotal(qty){
+// sum items subtotal. params: "orderQty", "fillQty"
+function getItemsSubtotalList(qtyType){
     let objArr = sortByProperty()
     let allItems = getUniqueItemNames()
     let sum = 0
@@ -85,7 +85,7 @@ function getItemsTotal(qty){
     for(let j = 0; j < allItems.length; j++){
         for(let i = 0; i < objArr.length; i++){
             if (allItems[j] == objArr[i].productName){
-                sum += objArr[i][qty]
+                sum += objArr[i][qtyType]
             }
         }
         arrayOfSums.push(sum)
@@ -96,8 +96,8 @@ function getItemsTotal(qty){
 // create subtotals rows
 function createSubtotalsRow(){
     let objArr = sortByProperty()
-    let orderSum = getItemsOrderedTotal()
-    let fillSum = getItemsFilledTotal()
+    let orderSum = getItemsSubtotalList('orderQty')
+    let fillSum = getItemsSubtotalList('fillQty')
     let j = 0
     let subtotal = {}
     // console.table(objArr)
@@ -118,5 +118,5 @@ let data = createSubtotalsRow()
 console.table(data)
 
 // sum all subtotals
-console.log(`Ordered: ${getItemsTotal('orderQty').reduce((a, c) => a + c)}`)
-console.log(`Filled: ${getItemsTotal('fillQty').reduce((a, c) => a + c)}`)
+console.log(`Ordered: ${getItemsSubtotalList('orderQty').reduce((a, c) => a + c)}`)
+console.log(`Filled: ${getItemsSubtotalList('fillQty').reduce((a, c) => a + c)}`)
