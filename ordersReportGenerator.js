@@ -113,6 +113,16 @@ function createSubtotalsRow(){
     objArr.splice(objArr.length, 0, lastSubtotal)    
     return objArr
 }
+function countStoresWithWheat (){
+  let stores = 0
+  for (let i = 0; i < data.length; i++){
+    if (data[i].productName == 'BREAD WHEAT OG' && data[i].customer !== null){
+      stores++
+    }
+  }
+  return stores
+}
+
 let delimiter = '* '
 let data = createSubtotalsRow()
 console.table(data)
@@ -120,3 +130,8 @@ console.table(data)
 // sum all subtotals
 console.log(`Ordered: ${getItemsSubtotalList('orderQty').reduce((a, c) => a + c)}`)
 console.log(`Filled: ${getItemsSubtotalList('fillQty').reduce((a, c) => a + c)}`)
+
+let storesWithWheat = countStoresWithWheat()
+if (storesWithWheat > 0){
+  console.log(`Stores with wheat: ${storesWithWheat}`)
+}
