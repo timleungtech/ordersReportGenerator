@@ -1,5 +1,7 @@
 // LPQ Orders by Product report generator. Run this script in the console of CrunchTime's Orders By Customers Consolidated Picklist page for an object table.
-// Required: 6 columns sorted in this order: Product Number, Product Name, Issue Unit, Order Qty, Fill Qty, Storage Location
+// Required: 
+//  - Group By Customers
+//  - 6 columns sorted in this order: Product Number, Product Name, Issue Unit, Order Qty, Fill Qty, Storage Location
 
 // get all td with html attribute data-qtip
 function getTableValues(){
@@ -26,10 +28,11 @@ function makeRows(){
             currentCustomer = getCustomers()[j]
             i += 2
         } else {
-            row = '00' + currentCustomer.trim().slice(10)
-            if (row.charAt(2) !== '3'){
-                row = '0' + row
-            }
+            row = currentCustomer.trim().slice(10)
+            // row = '00' + currentCustomer.trim().slice(10)
+            // if (row.charAt(2) !== '3'){
+            //     row = '0' + row
+            // }
             row = row.concat(delimiter, items[i], delimiter, items[i+1], delimiter, items[i+2], delimiter, items[i+3], delimiter, items[i+4], delimiter, items[i+5])
             newArr.push(row)
             i += 5
